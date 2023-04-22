@@ -1,0 +1,38 @@
+# cat <<EOF/etc.awslogs/awslogs.conf
+# [general]
+# state_file = /var/lib/awslogs/agent-state
+# [/var/log/messages]
+# datetime_format = %b %d %H:%M:%S
+# file = /var/log/messages
+# buffer_duration = 5000
+# log_stream_name = {instance_id}
+# initial_position = start_of_file
+# log_group_name = ${log_group_name}
+# EOF
+
+# cat <<EOF/etc/awslogs/awscli.conf
+# [plugins]
+# cwlogs = cwlogs
+# [default]
+# region = ${region}
+# EOF
+
+# sudo mkdir /home/ec2-user/efs
+# sudo pip3 install botocore --upgrade
+# sudo yum install -y amazon-efs-utils
+# sudo sed -i -e '/\[cloudwatch-log\]/{N;s/# enabled = true/enabled = true/}' /etc/amazon/efs/efs-utils.conf
+# sudo mount -t efs -o tls fs-0cb838d510b35e34c:/ efs
+
+# # Change the conf file to enable the cloudwatch group
+#  /etc/amazon/efs/efs-utils.conf
+
+
+#  sudo mount -t efs file-system-id efs-mount-point/
+
+#  # check with df -h
+
+# sudo mkdir /home/ec2-user/efs
+# sudo pip3 install botocore --upgrade
+# sudo yum install -y amazon-efs-utils
+# sudo sed -i -e '/\[cloudwatch-log\]/{N;s/# enabled = true/enabled = true/}' /etc/amazon/efs/efs-utils.conf
+# sudo sh -c "cd /home; mount -t efs -o tls fs-0665d1c67b6aef5c0:/ efs"
