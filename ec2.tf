@@ -1,37 +1,44 @@
-resource "aws_instance" "example" {
-  ami               = "ami-069aabeee6f53e7bf"
-  instance_type     = "t2.micro"
-  availability_zone = "us-east-1a"
-  key_name          = "tfkey"
-  user_data         = file("${path.module}/user_data.sh")
-  #   user_data            = <<EOF
-  #     #!/bin/bash
-  #     sudo yum update -y
-  #     sudo yum install -y awslogs
-  #     sudo systemctl start awslogsd
-  #     sudo systemctl enable awslogsd.service
-  #     EOF
-  security_groups      = [aws_security_group.allow_efs.name]
-  iam_instance_profile = aws_iam_instance_profile.ec2-iam-profile.name
-  tags = {
-    Name = "mgm-efs-logs"
-  }
-}
+# resource "aws_instance" "example" {
+#   ami               = "ami-069aabeee6f53e7bf"
+#   instance_type     = "t2.micro"
+#   availability_zone = "us-east-1a"
+#   key_name          = "tfkey"
+#   user_data         = file("${path.module}/user_data.sh")
+#   #   user_data            = <<EOF
+#   #     #!/bin/bash
+#   #     sudo yum update -y
+#   #     sudo yum install -y awslogs
+#   #     sudo systemctl start awslogsd
+#   #     sudo systemctl enable awslogsd.service
+#   #     EOF
+#   security_groups      = [aws_security_group.allow_efs.name]
+#   iam_instance_profile = aws_iam_instance_profile.ec2-iam-profile.name
+#   tags = {
+#     Name = "mgm-efs-logs"
+#   }
+#   depends_on = [
+#     aws_efs_mount_target.mount
+#   ]
+# }
 
-resource "aws_instance" "example2" {
+resource "aws_instance" "efs" {
   ami               = "ami-069aabeee6f53e7bf"
   instance_type     = "t2.micro"
   availability_zone = "us-east-1a"
   key_name          = "tfkey"
-  #user_data         = file("${path.module}/user_data.sh")
-  user_data            = <<EOF
-  #!/bin/bash
-  sudo mkdir /home/ec2-user/efs
-  sudo pip3 install botocore --upgrade
-  sudo yum install -y amazon-efs-utils
-  sudo sed -i -e '/\[cloudwatch-log\]/{N;s/# enabled = true/enabled = true/}' /etc/amazon/efs/efs-utils.conf
-  sudo sh -c "cd /home/ec2-user; mount -t efs -o tls ${aws_efs_file_system.efs.id}:/ efs" 
-  EOF    
+  user_data = templatefile("${path.module}/scripts/efs_logs.tpl.sh", {
+    log_group_name = "${aws_cloudwatch_log_group.efs.name}"
+    efs_id         = "${aws_efs_file_system.efs.id}"
+  })
+  #user_data            = <<EOF
+  # #!/bin/bash
+  # sudo mkdir /home/ec2-user/efs
+  # sudo pip3 install botocore --upgrade
+  # sudo yum install -y amazon-efs-utils
+  # sudo sed -i -e '/\[cloudwatch-log\]/{N;s/# enabled = true/enabled = true/}' /etc/amazon/efs/efs-utils.conf
+  # sudo sed -i "s/^log_group_name = .*/log_group_name = ${aws_cloudwatch_log_group.efs.name}/g" /etc/amazon/efs/efs-utils.conf
+  # sudo sh -c "cd /home/ec2-user; mount -t efs -o tls ${aws_efs_file_system.efs.id}:/ efs" 
+  # EOF    
   security_groups      = [aws_security_group.allow_efs.name]
   iam_instance_profile = aws_iam_instance_profile.ec2-iam-profile.name
   tags = {
@@ -39,7 +46,8 @@ resource "aws_instance" "example2" {
   }
 }
 
-
+# sudo sed -i -e '/\[cloudwatch-log\]/{N;s/log_group_name = /aws/efs/utils/log_group_name = efs_mount_logs/}' /etc/amazon/efs/efs-utils.conf
+# sed -i 's/^log_group_name = .*/log_group_name = efs_mount_logs/g' /etc/amazon/efs/efs-utils.conf
 resource "aws_security_group" "allow_efs" {
   name        = "allow_EFS"
   description = "Allow EFS inbound traffic"

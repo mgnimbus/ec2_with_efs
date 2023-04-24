@@ -21,13 +21,66 @@
 # sudo pip3 install botocore --upgrade
 # sudo yum install -y amazon-efs-utils
 # sudo sed -i -e '/\[cloudwatch-log\]/{N;s/# enabled = true/enabled = true/}' /etc/amazon/efs/efs-utils.conf
-# sudo mount -t efs -o tls fs-0cb838d510b35e34c:/ efs
+# sudo mount -t efs -o tls fs-06e68132adf5c2371:/ efs
+
+sudo su
+cd /home/ec2-user
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ ef
+mount -t efs -o tls fs-06e68132adf5c2371:/ efs
 
 # # Change the conf file to enable the cloudwatch group
 #  /etc/amazon/efs/efs-utils.conf
 
 
 #  sudo mount -t efs file-system-id efs-mount-point/
+
+# umount /home/ec2-user/efs
 
 #  # check with df -h
 
