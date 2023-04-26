@@ -21,58 +21,100 @@
 # sudo pip3 install botocore --upgrade
 # sudo yum install -y amazon-efs-utils
 # sudo sed -i -e '/\[cloudwatch-log\]/{N;s/# enabled = true/enabled = true/}' /etc/amazon/efs/efs-utils.conf
-# sudo mount -t efs -o tls fs-06e68132adf5c2371:/ efs
+# sudo mount -t efs -o tls fs-0fc10a7daf5dec23f:/ efs
 
 sudo su
 cd /home/ec2-user
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ ef
-mount -t efs -o tls fs-06e68132adf5c2371:/ efs
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ ef
+
+
+
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ efs
+umount /home/ec2-user/efs
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ efs
+umount /home/ec2-user/efs
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ efs
+umount /home/ec2-user/efs
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ efs
+umount /home/ec2-user/efs
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ efs
+umount /home/ec2-user/efs
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ efs
+umount /home/ec2-user/efs
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ efs
+umount /home/ec2-user/efs
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ efs
+umount /home/ec2-user/efs
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ efs
+umount /home/ec2-user/efs
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ efs
+umount /home/ec2-user/efs
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ efs
+umount /home/ec2-user/efs
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ efs
+umount /home/ec2-user/efs
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ efs
+umount /home/ec2-user/efs
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ efs
+umount /home/ec2-user/efs
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ efs
+umount /home/ec2-user/efs
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ efs
+umount /home/ec2-user/efs
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ efs
+umount /home/ec2-user/efs
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ efs
+umount /home/ec2-user/efs
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ efs
+umount /home/ec2-user/efs
+mount -t efs -o tls fs-0fc10a7daf5dec23f:/ efs
+
 
 # # Change the conf file to enable the cloudwatch group
 #  /etc/amazon/efs/efs-utils.conf

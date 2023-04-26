@@ -26,7 +26,7 @@ resource "aws_iam_role_policy" "cwl_kf_policy" {
           "firehose:PutRecord",
         ]
         Effect   = "Allow"
-        Resource = "arn:aws:firehose:us-east-1:328268088738:deliverystream/efs_log_stream" #"${aws_kinesis_firehose_delivery_stream.extended_s3_stream.arn}"
+        Resource = "${aws_kinesis_firehose_delivery_stream.extended_s3_stream.arn}"
       },
     ]
   })
@@ -114,10 +114,6 @@ resource "aws_kinesis_firehose_delivery_stream" "extended_s3_stream" {
         parameters {
           parameter_name  = "LambdaArn"
           parameter_value = "${aws_lambda_function.lambda_processor.arn}:$LATEST"
-        }
-        parameters {
-          parameter_name  = "BufferIntervalInSeconds"
-          parameter_value = "180"
         }
         parameters {
           parameter_name  = "BufferSizeInMBs"

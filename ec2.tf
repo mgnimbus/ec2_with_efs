@@ -30,15 +30,6 @@ resource "aws_instance" "efs" {
     log_group_name = "${aws_cloudwatch_log_group.efs.name}"
     efs_id         = "${aws_efs_file_system.efs.id}"
   })
-  #user_data            = <<EOF
-  # #!/bin/bash
-  # sudo mkdir /home/ec2-user/efs
-  # sudo pip3 install botocore --upgrade
-  # sudo yum install -y amazon-efs-utils
-  # sudo sed -i -e '/\[cloudwatch-log\]/{N;s/# enabled = true/enabled = true/}' /etc/amazon/efs/efs-utils.conf
-  # sudo sed -i "s/^log_group_name = .*/log_group_name = ${aws_cloudwatch_log_group.efs.name}/g" /etc/amazon/efs/efs-utils.conf
-  # sudo sh -c "cd /home/ec2-user; mount -t efs -o tls ${aws_efs_file_system.efs.id}:/ efs" 
-  # EOF    
   security_groups      = [aws_security_group.allow_efs.name]
   iam_instance_profile = aws_iam_instance_profile.ec2-iam-profile.name
   tags = {
@@ -46,8 +37,6 @@ resource "aws_instance" "efs" {
   }
 }
 
-# sudo sed -i -e '/\[cloudwatch-log\]/{N;s/log_group_name = /aws/efs/utils/log_group_name = efs_mount_logs/}' /etc/amazon/efs/efs-utils.conf
-# sed -i 's/^log_group_name = .*/log_group_name = efs_mount_logs/g' /etc/amazon/efs/efs-utils.conf
 resource "aws_security_group" "allow_efs" {
   name        = "allow_EFS"
   description = "Allow EFS inbound traffic"
@@ -72,6 +61,5 @@ resource "aws_security_group" "allow_efs" {
     Name = "allow_nfs"
   }
 }
-
 
 # aws cloudwatch get-metric-statistics --metric-name StorageBytes --start-time 2023-04-19T22:32:51 --end-time 2023-04-19T22:40:59 --period 900 --statistics Sum --namespace AWS/EFS --dimensions Name=FileSystemId,Value=fs-070268fe0f240916f Name=StorageClass,Value=Total

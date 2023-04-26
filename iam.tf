@@ -29,12 +29,7 @@ resource "aws_iam_instance_profile" "ec2-iam-profile" {
 }
 
 resource "aws_iam_policy" "policy" {
-  name        = "cw_policy"
-  path        = "/"
-  description = "My cw policy"
-
-  # Terraform's "jsonencode" function converts a
-  # Terraform expression result to valid JSON syntax.
+  name = "cw_policy"
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -47,44 +42,6 @@ resource "aws_iam_policy" "policy" {
         ]
         Effect   = "Allow"
         Resource = "*"
-      },
-    ]
-  })
-}
-
-##########
-# CW role
-##########
-
-resource "aws_iam_role_policy" "cwl_policy" {
-  name = "cwl_policy"
-  role = aws_iam_role.cw_role.id
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = [
-          "firehose:PutRecord",
-        ]
-        Effect   = "Allow"
-        Resource = "arn:aws:firehose:us-east-1:328268088738:deliverystream/test-ec2-logs"
-      },
-    ]
-  })
-}
-
-resource "aws_iam_role" "cw_role" {
-  name = "cw_logs_role"
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Sid    = ""
-        Principal = {
-          Service = "logs.amazonaws.com"
-        }
       },
     ]
   })
