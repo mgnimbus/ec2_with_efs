@@ -83,9 +83,10 @@ def lambda_handler(event, context):
     # Convert the Pandas dataframe to an Arrow table
     table = pa.Table.from_pandas(df)
 
-    # Write the Arrow table to a Parquet file in memory
-    parquet_bytes = pa.BufferOutputStream()
-    pq.write_table(table, parquet_bytes)
+    # Convert the Arrow table to a GZip compressed stream
+    compressed_stream = pa.BufferOutputStream()
+    with gzip.GzipFile(fileobj=compressed_stream, mode='w') as f:
+        pq.write_table(table, f)
 
     # Upload the Parquet file to S3
     s3 = boto3.client('s3')
@@ -95,13 +96,13 @@ def lambda_handler(event, context):
     month = dt.month
     day = dt.day
     hour = dt.hour
-    path = f"{BUCKET_PREFIX}/year={year}/month={month}/day={day}/hour={hour}/{uuid.uuid4().__str__()}.parquet"
-    print("type", type(parquet_bytes.getvalue()))
+    path = f"{BUCKET_PREFIX}/year={year}/month={month}/day={day}/hour={hour}/{uuid.uuid4().__str__()}-gzip.parquet"
+    print("type", type(compressed_stream.getvalue()))
 
     s3.put_object(
         Bucket=BUCKET_NAME,
         Key=path,
-        Body=parquet_bytes.getvalue().to_pybytes()
+        Body=compressed_stream.getvalue().to_pybytes()
     )
 
     # Return the processed records as a list
