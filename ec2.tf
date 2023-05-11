@@ -26,7 +26,7 @@ resource "aws_instance" "efs" {
   instance_type     = "t2.micro"
   availability_zone = "us-east-1a"
   key_name          = "tfkey"
-  user_data = templatefile("${path.module}/scripts/efs_logs.tpl.sh", {
+  user_data = templatefile("${path.module}/scripts/user_data/efs_logs.tpl.sh", {
     log_group_name = "${aws_cloudwatch_log_group.efs.name}"
     efs_id         = "${aws_efs_file_system.efs.id}"
   })

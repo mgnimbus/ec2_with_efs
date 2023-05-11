@@ -1,4 +1,4 @@
-  #!/bin/bash
+  #! /bin/bash
   sudo mkdir /home/ec2-user/efs
   sudo pip3 install botocore --upgrade
   sudo yum install -y amazon-efs-utils

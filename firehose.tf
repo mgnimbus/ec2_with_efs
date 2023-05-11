@@ -79,8 +79,8 @@ resource "aws_iam_policy" "firehose_policy" {
         ]
         Effect = "Allow"
         Resource = [
-          "${aws_s3_bucket.bucket.arn}",
-          "${aws_s3_bucket.bucket.arn}/*"
+          "${data.aws_s3_bucket.bucket.arn}",
+          "${data.aws_s3_bucket.bucket.arn}/*"
         ]
       },
       {
@@ -102,8 +102,9 @@ resource "aws_kinesis_firehose_delivery_stream" "extended_s3_stream" {
   destination = "extended_s3"
 
   extended_s3_configuration {
-    role_arn   = aws_iam_role.firehose_role.arn
-    bucket_arn = aws_s3_bucket.bucket.arn
+    role_arn    = aws_iam_role.firehose_role.arn
+    bucket_arn  = data.aws_s3_bucket.bucket.arn
+    buffer_size = 128
 
     processing_configuration {
       enabled = "true"
@@ -117,22 +118,44 @@ resource "aws_kinesis_firehose_delivery_stream" "extended_s3_stream" {
         }
         parameters {
           parameter_name  = "BufferSizeInMBs"
-          parameter_value = "1"
+          parameter_value = "2"
+        }
+        parameters {
+          parameter_name  = "BufferIntervalInSeconds"
+          parameter_value = "64"
         }
       }
     }
+    data_format_conversion_configuration {
+      input_format_configuration {
+        deserializer {
+          hive_json_ser_de {}
+        }
+      }
+
+      output_format_configuration {
+        serializer {
+          parquet_ser_de {
+            compression = "GZIP"
+          }
+        }
+      }
+
+      schema_configuration {
+        database_name = "default"
+        role_arn      = "arn:aws:iam::328268088738:role/service-role/AWSGlueServiceRole-efs"
+        table_name    = aws_glue_catalog_table.aws_glue_catalog_table.name
+      }
+    }
+
   }
 }
 
 # logs bucket
-resource "aws_s3_bucket" "bucket" {
-  bucket = "efs-logs-bucky"
+data "aws_s3_bucket" "bucket" {
+  bucket = "ec2-logs-bucky"
 }
 
-# resource "aws_s3_bucket_acl" "bucket_acl" {
-#   bucket = aws_s3_bucket.bucket.id
-#   acl    = "private"
-# }
 
 # Lambda role
 data "aws_iam_policy_document" "lambda_assume_role" {
@@ -158,8 +181,8 @@ provider "archive" {}
 
 data "archive_file" "zip" {
   type        = "zip"
-  source_file = "./scripts/decomp/decomp.py"
-  output_path = "./scripts/decomp/decomp.zip"
+  source_file = "./scripts/decomp/json_decomp.py"
+  output_path = "./scripts/decomp/json_decomp.zip"
 }
 
 # Lambda Function
@@ -168,7 +191,37 @@ resource "aws_lambda_function" "lambda_processor" {
   filename         = data.archive_file.zip.output_path
   source_code_hash = data.archive_file.zip.output_base64sha256
   role             = aws_iam_role.lambda_iam.arn
-  handler          = "decomp.lambda_handler"
+  handler          = "json_decomp.lambda_handler"
   runtime          = "python3.8"
   timeout          = 60
+}
+
+resource "aws_glue_catalog_table" "aws_glue_catalog_table" {
+  name          = "ohmyefstabs"
+  database_name = "default"
+
+  table_type = "EXTERNAL_TABLE"
+
+  parameters = {
+    EXTERNAL = "TRUE"
+  }
+
+  storage_descriptor {
+    input_format  = "org.apache.hadoop.mapred.TextInputFormat"
+    output_format = "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat"
+
+    ser_de_info {
+      name                  = "json"
+      serialization_library = "org.openx.data.jsonserde.JsonSerDe"
+
+      parameters = {
+        "serialization.format" = 1
+      }
+    }
+
+    columns {
+      name = "message"
+      type = "string"
+    }
+  }
 }
