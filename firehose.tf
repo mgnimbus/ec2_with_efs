@@ -102,9 +102,10 @@ resource "aws_kinesis_firehose_delivery_stream" "extended_s3_stream" {
   destination = "extended_s3"
 
   extended_s3_configuration {
-    role_arn    = aws_iam_role.firehose_role.arn
+    role_arn    = "arn:aws:iam::328268088738:role/service-role/KinesisFirehoseServiceRole-efs_log_strea-us-east-1-1683829672417"
     bucket_arn  = data.aws_s3_bucket.bucket.arn
     buffer_size = 128
+    prefix      = "efs_logs_parquet/"
 
     processing_configuration {
       enabled = "true"
@@ -129,7 +130,11 @@ resource "aws_kinesis_firehose_delivery_stream" "extended_s3_stream" {
     data_format_conversion_configuration {
       input_format_configuration {
         deserializer {
-          hive_json_ser_de {}
+          open_x_json_ser_de {
+            case_insensitive                         = true
+            column_to_json_key_mappings              = {}
+            convert_dots_in_json_keys_to_underscores = false
+          }
         }
       }
 
@@ -143,7 +148,7 @@ resource "aws_kinesis_firehose_delivery_stream" "extended_s3_stream" {
 
       schema_configuration {
         database_name = "default"
-        role_arn      = "arn:aws:iam::328268088738:role/service-role/AWSGlueServiceRole-efs"
+        role_arn      = "arn:aws:iam::328268088738:role/service-role/KinesisFirehoseServiceRole-efs_log_strea-us-east-1-1683829672417"
         table_name    = aws_glue_catalog_table.aws_glue_catalog_table.name
       }
     }
@@ -153,7 +158,7 @@ resource "aws_kinesis_firehose_delivery_stream" "extended_s3_stream" {
 
 # logs bucket
 data "aws_s3_bucket" "bucket" {
-  bucket = "ec2-logs-bucky"
+  bucket = "efs-logs-bucky"
 }
 
 
@@ -220,7 +225,7 @@ resource "aws_glue_catalog_table" "aws_glue_catalog_table" {
     }
 
     columns {
-      name = "message"
+      name = "mount_status"
       type = "string"
     }
   }

@@ -16,7 +16,7 @@ def lambda_handler(event, context):
 
         # Create a new JSON object containing only the processed message
         processed_data = {
-            'message': processed_message
+            'mount_status': processed_message
         }
 
         # Encode the modified JSON object and append it to the output
