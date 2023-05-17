@@ -10,29 +10,22 @@ def lambda_handler(event, context):
         data = json.loads(gzip.decompress(base64.b64decode(record['data'])))
 
         if data['messageType'] == 'DATA_MESSAGE':
-            processed_data = []
-
+            output_records = []
             for log_event in data['logEvents']:
                 message = log_event['message']
+                log_id = log_event['id']
 
-                message_data = {
-                    'mount_status': message
-                }
+                if not message.endswith('\n'):
+                    message += '\n'
 
-                processed_json_str = json.dumps(message_data)
-                processed_data.append(processed_json_str)
-
-            # Join processed logs with new lines
-            processed_logs = '\n'.join(processed_data)
+                dict1 = {'mount_status': message}
+                output_records.append(json.dumps(dict1))
 
             output_record = {
                 'recordId': record['recordId'],
                 'result': 'Ok',
-                'data': base64.b64encode(processed_logs.encode('utf-8')).decode('utf-8')
+                'data': base64.b64encode(','.join(output_records).encode('utf-8')).decode('utf-8')
             }
-
             output.append(output_record)
-
-    print('Successfully processed {} records.'.format(len(event['records'])))
 
     return {'records': output}

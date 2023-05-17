@@ -1,3 +1,64 @@
+# firehose stream
+resource "aws_kinesis_firehose_delivery_stream" "extended_s3_stream" {
+  name        = "efs_log_stream"
+  destination = "extended_s3"
+
+  extended_s3_configuration {
+    role_arn    = aws_iam_role.firehose_s3_role.arn
+    bucket_arn  = data.aws_s3_bucket.bucket.arn
+    buffer_size = 128
+    prefix      = "efs_logs_parquet/"
+
+    processing_configuration {
+      enabled = "true"
+
+      processors {
+        type = "Lambda"
+
+        parameters {
+          parameter_name  = "LambdaArn"
+          parameter_value = "${aws_lambda_function.lambda_processor.arn}:$LATEST"
+        }
+        parameters {
+          parameter_name  = "BufferSizeInMBs"
+          parameter_value = "2"
+        }
+        parameters {
+          parameter_name  = "BufferIntervalInSeconds"
+          parameter_value = "64"
+        }
+      }
+    }
+    data_format_conversion_configuration {
+      enabled = true
+      input_format_configuration {
+        deserializer {
+          open_x_json_ser_de {
+            case_insensitive                         = true
+            column_to_json_key_mappings              = {}
+            convert_dots_in_json_keys_to_underscores = false
+          }
+        }
+      }
+
+      output_format_configuration {
+        serializer {
+          parquet_ser_de {
+            compression = "GZIP"
+          }
+        }
+      }
+
+      schema_configuration {
+        database_name = "default"
+        role_arn      = aws_iam_role.firehose_s3_role.arn
+        table_name    = aws_glue_catalog_table.aws_glue_catalog_table.name
+      }
+    }
+
+  }
+}
+
 # cw - firehose role 
 resource "aws_iam_role" "cwl_kf_role" {
   name = "cw_firehose_role"
@@ -42,10 +103,10 @@ resource "aws_cloudwatch_log_subscription_filter" "test_lambdafunction_logfilter
 }
 
 # Firehose - s3 role 
-resource "aws_iam_role" "firehose_role" {
-  name                = "firehose_s3_role"
+resource "aws_iam_role" "firehose_s3_role" {
+  name                = "firehose_s3_role_efs"
   assume_role_policy  = data.aws_iam_policy_document.firehose_assume_role.json
-  managed_policy_arns = [aws_iam_policy.firehose_policy.arn]
+  managed_policy_arns = [aws_iam_policy.firehose_policy.arn, "arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole"]
 }
 
 data "aws_iam_policy_document" "firehose_assume_role" {
@@ -96,65 +157,7 @@ resource "aws_iam_policy" "firehose_policy" {
   })
 }
 
-# firehose stream
-resource "aws_kinesis_firehose_delivery_stream" "extended_s3_stream" {
-  name        = "efs_log_stream"
-  destination = "extended_s3"
 
-  extended_s3_configuration {
-    role_arn    = "arn:aws:iam::328268088738:role/service-role/KinesisFirehoseServiceRole-efs_log_strea-us-east-1-1683829672417"
-    bucket_arn  = data.aws_s3_bucket.bucket.arn
-    buffer_size = 128
-    prefix      = "efs_logs_parquet/"
-
-    processing_configuration {
-      enabled = "true"
-
-      processors {
-        type = "Lambda"
-
-        parameters {
-          parameter_name  = "LambdaArn"
-          parameter_value = "${aws_lambda_function.lambda_processor.arn}:$LATEST"
-        }
-        parameters {
-          parameter_name  = "BufferSizeInMBs"
-          parameter_value = "2"
-        }
-        parameters {
-          parameter_name  = "BufferIntervalInSeconds"
-          parameter_value = "64"
-        }
-      }
-    }
-    data_format_conversion_configuration {
-      input_format_configuration {
-        deserializer {
-          open_x_json_ser_de {
-            case_insensitive                         = true
-            column_to_json_key_mappings              = {}
-            convert_dots_in_json_keys_to_underscores = false
-          }
-        }
-      }
-
-      output_format_configuration {
-        serializer {
-          parquet_ser_de {
-            compression = "GZIP"
-          }
-        }
-      }
-
-      schema_configuration {
-        database_name = "default"
-        role_arn      = "arn:aws:iam::328268088738:role/service-role/KinesisFirehoseServiceRole-efs_log_strea-us-east-1-1683829672417"
-        table_name    = aws_glue_catalog_table.aws_glue_catalog_table.name
-      }
-    }
-
-  }
-}
 
 # logs bucket
 data "aws_s3_bucket" "bucket" {
