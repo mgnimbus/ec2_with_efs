@@ -33,59 +33,6 @@ def processRecords(records):
             }
 
 
-def splitCWLRecord(cwlRecord):
-    """
-    Splits one CWL record into two, each containing half the log events.
-    Serializes and compreses the data before returning. That data can then be
-    re-ingested into the stream, and it'll appear as though they came from CWL
-    directly.
-    """
-    logEvents = cwlRecord['logEvents']
-    mid = len(logEvents) // 2
-    rec1 = {k: v for k, v in cwlRecord.items()}
-    rec1['logEvents'] = logEvents[:mid]
-    rec2 = {k: v for k, v in cwlRecord.items()}
-    rec2['logEvents'] = logEvents[mid:]
-    return [gzip.compress(json.dumps(r).encode('utf-8')) for r in [rec1, rec2]]
-
-
-def putRecordsToFirehoseStream(streamName, records, client, attemptsMade, maxAttempts):
-    failedRecords = []
-    codes = []
-    errMsg = ''
-    # if put_record_batch throws for whatever reason, response['xx'] will error out, adding a check for a valid
-    # response will prevent this
-    response = None
-    try:
-        response = client.put_record_batch(
-            DeliveryStreamName=streamName, Records=records)
-    except Exception as e:
-        failedRecords = records
-        errMsg = str(e)
-
-    # if there are no failedRecords (put_record_batch succeeded), iterate over the response to gather results
-    if not failedRecords and response and response['FailedPutCount'] > 0:
-        for idx, res in enumerate(response['RequestResponses']):
-            # (if the result does not have a key 'ErrorCode' OR if it does and is empty) => we do not need to re-ingest
-            if not res.get('ErrorCode'):
-                continue
-
-            codes.append(res['ErrorCode'])
-            failedRecords.append(records[idx])
-
-        errMsg = 'Individual error codes: ' + ','.join(codes)
-
-    if failedRecords:
-        if attemptsMade + 1 < maxAttempts:
-            print(
-                'Some records failed while calling PutRecordBatch to Firehose stream, retrying. %s' % (errMsg))
-            putRecordsToFirehoseStream(
-                streamName, failedRecords, client, attemptsMade + 1, maxAttempts)
-        else:
-            raise RuntimeError('Could not put records after %s attempts. %s' % (
-                str(maxAttempts), errMsg))
-
-
 def createReingestionRecord(isSas, originalRecord, data=None):
     if data is None:
         data = base64.b64decode(originalRecord['data'])
