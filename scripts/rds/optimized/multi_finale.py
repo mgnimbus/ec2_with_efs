@@ -75,6 +75,8 @@ def lambda_handler(event, context):
             print("Output record:", output_record)
         else:
             print("No match found for the messages with record ID:", record_id)
+            # Add the unmatched record to the output
+            output[record_id] = {'recordId': record_id}
 
     print('Successfully processed {} records.'.format(len(event['records'])))
 
